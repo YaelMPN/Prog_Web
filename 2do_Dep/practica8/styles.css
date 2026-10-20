@@ -1,0 +1,135 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f4f6f8;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Barra superior tipo menú */
+.barra-superior {
+    background-color: #1e293b;
+    color: #ffffff;
+    height: 60px;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.titulo-barra {
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+/* Extremo superior derecho: Ícono y contador de notificaciones */
+.contenedor-notificaciones {
+    position: relative;
+}
+
+.btn-icono {
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    padding: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icono-campana {
+    width: 28px;
+    height: 28px;
+    fill: #ffffff;
+}
+
+.contador {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: #ef4444;
+    color: #ffffff;
+    font-size: 0.75rem;
+    font-weight: bold;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 4px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Menú desplegable de notificaciones */
+.menu-notificaciones {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    background-color: #ffffff;
+    color: #1e293b;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    min-width: 190px;
+    max-height: 260px;
+    overflow-y: auto;
+    list-style: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 100;
+}
+
+.menu-notificaciones.abierto {
+    display: block;
+}
+
+.menu-notificaciones li {
+    padding: 10px 14px;
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 0.9rem;
+}
+
+.menu-notificaciones li:last-child {
+    border-bottom: none;
+}
+
+.menu-notificaciones li.vacio {
+    color: #94a3b8;
+    text-align: center;
+}
+
+/* Contenedor central y botón "Inicio" con efecto sumido */
+.contenedor-principal {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-inicio {
+    padding: 14px 36px;
+    font-size: 1.15rem;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #2563eb;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 6px 0 #1e40af, 0 8px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.1s ease;
+}
+
+/* Efecto de botón presionado (sumido) al dar clic */
+.btn-inicio:active,
+.btn-inicio.presionado {
+    background-color: #1d4ed8;
+    transform: translateY(5px);
+    box-shadow: 0 1px 0 #1e40af, inset 0 3px 6px rgba(0, 0, 0, 0.35);
+}
+

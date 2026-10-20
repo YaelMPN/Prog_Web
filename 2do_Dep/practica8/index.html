@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Práctica 8 - Notificaciones</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Barra superior tipo menú -->
+    <header class="barra-superior">
+        <div class="menu-izquierda">
+            <span class="titulo-barra">Menú</span>
+        </div>
+
+        <!-- Extremo superior derecho: Ícono de notificaciones con contador y menú desplegable -->
+        <div class="contenedor-notificaciones">
+            <button type="button" id="btnCampana" class="btn-icono" aria-label="Notificaciones">
+                <svg class="icono-campana" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/>
+                </svg>
+                <span id="contadorNotificaciones" class="contador">0</span>
+            </button>
+
+            <!-- Menú desplegable con la lista de notificaciones -->
+            <ul id="listaNotificaciones" class="menu-notificaciones">
+                <li class="vacio">Sin notificaciones</li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Contenido principal con el botón "Inicio" -->
+    <main class="contenedor-principal">
+        <button type="button" id="btnInicio" class="btn-inicio">Inicio</button>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
+

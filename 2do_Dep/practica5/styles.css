@@ -1,0 +1,92 @@
+/* Reinicio básico de márgenes */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f4f6f9;
+    color: #333;
+}
+
+/* Barra de navegación principal */
+.navbar {
+    background-color: #1e293b; /* Color base oscuro */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.menu-principal {
+    list-style: none;
+    display: flex;
+    justify-content: flex-start;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.menu-principal > li {
+    position: relative; /* Necesario para posicionar el submenú justo debajo */
+}
+
+.menu-principal > li > a {
+    display: block;
+    padding: 16px 24px;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* Punto 3 y 4: Resaltar opción principal al pasar el cursor (hover) */
+.menu-principal > li:hover > a {
+    background-color: #0ea5e9; /* Color de resaltado al seleccionar/pasar el cursor */
+    color: #ffffff;
+}
+
+/* Submenús: Ocultos por defecto al inicio */
+.submenu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #334155;
+    min-width: 200px;
+    list-style: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    z-index: 100;
+}
+
+.submenu li a {
+    display: block;
+    padding: 12px 20px;
+    color: #e2e8f0;
+    text-decoration: none;
+    font-size: 0.95rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    transition: background-color 0.2s ease, padding-left 0.2s ease;
+}
+
+/* Resaltar opciones internas del submenú al pasar el cursor */
+.submenu li a:hover {
+    background-color: #0284c7; /* Tono de resaltado para subopciones */
+    color: #ffffff;
+    padding-left: 26px; /* Pequeño desplazamiento visual */
+}
+
+/* Desplegar únicamente el submenú de la opción sobre la que está el cursor */
+.menu-principal > li:hover > .submenu {
+    display: block;
+}
+
+/* Área de contenido de ejemplo */
+.contenido {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 24px;
+}
+
+.contenido h1 {
+    margin-bottom: 12px;
+    color: #1e293b;
+}

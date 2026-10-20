@@ -1,0 +1,500 @@
+/* ==========================================================================
+   SISTEMA DE CONTROL DE FINANZAS PERSONALES
+   Archivo: css/styles.css
+   Rol Arquitectónico: Capa de Presentación (View Styling) complementaria a
+   Bootstrap 5 (Layout/Grid/Tablas) y Tailwind CSS (Utilidades/Micro-interacciones).
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. VARIABLES CSS Y PALETA CROMÁTICA
+   -------------------------------------------------------------------------- */
+:root {
+    --color-bg-main: #F4F6F8;          /* Fondo general limpio */
+    --color-surface: #FFFFFF;          /* Tarjetas y contenedores */
+    --color-border: #CFD8DC;           /* Bordes definidos */
+    --color-text-main: #2D3748;        /* Texto principal */
+    --color-text-muted: #64748B;       /* Texto secundario */
+    --color-primary-inst: #3B5266;     /* Azul primario */
+    --color-royal-blue: #1D4ED8;       /* Azul Rey (Botones primarios) */
+    --color-royal-blue-hover: #2563EB; /* Azul Rey estado activo/hover */
+    --color-aqua-accent: #00D9FF;      /* Azul Agua (Píldora activa, hover y badges) */
+    --color-income: #15803D;           /* Verde para ingresos */
+    --color-income-bg: #DCFCE7;
+    --color-expense: #B91C1C;          /* Rojo para egresos */
+    --color-expense-bg: #FEE2E2;
+    --font-sans: 'Inter', Arial, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* --------------------------------------------------------------------------
+   2. RESETS Y COMPATIBILIDAD BOOTSTRAP 5 + TAILWIND CSS
+   -------------------------------------------------------------------------- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    min-height: 100vh;
+    background-color: var(--color-bg-main) !important;
+    color: var(--color-text-main) !important;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+/* --------------------------------------------------------------------------
+   3. NAVBAR SUPERIOR CON EFECTO "PÍLDORA / BURBUJA" (#00D9FF)
+   -------------------------------------------------------------------------- */
+.navbar-finanzas {
+    background-color: var(--color-primary-inst);
+    border-bottom: 2px solid var(--color-border);
+    padding: 0.7rem 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 1030;
+}
+
+.navbar-brand-title {
+    color: #FFFFFF !important;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    text-decoration: none;
+    font-size: 1.15rem;
+}
+
+.bubble-nav-container {
+    background-color: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(207, 216, 220, 0.25);
+    border-radius: 9999px;
+    padding: 0.28rem;
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+}
+
+.bubble-nav-link {
+    color: #E2E8F0 !important;
+    font-size: 0.88rem;
+    font-weight: 600;
+    padding: 0.45rem 1.1rem !important;
+    border-radius: 9999px;
+    text-decoration: none;
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    white-space: nowrap;
+}
+
+.bubble-nav-link:hover,
+.bubble-nav-link:focus {
+    background-color: rgba(0, 217, 255, 0.25);
+    color: #FFFFFF !important;
+}
+
+/* Efecto Burbuja Activa en Azul Agua (#00D9FF) */
+.bubble-nav-link.active {
+    background-color: var(--color-aqua-accent) !important;
+    color: #0F172A !important;
+    font-weight: 700;
+    box-shadow: 0 2px 8px rgba(0, 217, 255, 0.35);
+}
+
+/* Avatar de usuario en la Navbar */
+.user-avatar-nav {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--color-aqua-accent);
+    background-color: #FFFFFF;
+}
+
+/* --------------------------------------------------------------------------
+   4. SISTEMA DE NOTIFICACIONES EN NAVBAR
+   Ícono de campana con contador y menú desplegable.
+   -------------------------------------------------------------------------- */
+.contenedor-notificaciones {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+.btn-campana {
+    position: relative;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    color: #FFFFFF;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.18s ease, transform 0.12s ease;
+}
+
+.btn-campana:hover {
+    background: rgba(0, 217, 255, 0.22);
+    border-color: var(--color-aqua-accent);
+}
+
+.icono-campana {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+.contador-notificaciones {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background-color: var(--color-aqua-accent);
+    color: #0F172A;
+    font-size: 0.7rem;
+    font-weight: 800;
+    min-width: 19px;
+    height: 19px;
+    padding: 0 5px;
+    border-radius: 9999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--color-primary-inst);
+}
+
+.menu-notificaciones {
+    display: none;
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    width: 300px;
+    max-height: 320px;
+    overflow-y: auto;
+    background-color: #FFFFFF;
+    border: 1px solid var(--color-border);
+    border-radius: 0.6rem;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.15);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    z-index: 1050;
+}
+
+.menu-notificaciones.abierto {
+    display: block;
+}
+
+.menu-notificaciones-header {
+    padding: 0.65rem 0.9rem;
+    background-color: #F8FAFC;
+    border-bottom: 1px solid var(--color-border);
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--color-primary-inst);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.menu-notificaciones li.item-notificacion {
+    padding: 0.65rem 0.9rem;
+    border-bottom: 1px solid #F1F5F9;
+    font-size: 0.82rem;
+    color: var(--color-text-main);
+    line-height: 1.35;
+}
+
+.menu-notificaciones li.item-notificacion:last-child {
+    border-bottom: none;
+}
+
+.menu-notificaciones li.vacio {
+    padding: 1.1rem;
+    text-align: center;
+    color: var(--color-text-muted);
+    font-size: 0.82rem;
+}
+
+/* --------------------------------------------------------------------------
+   5. VENTANAS EMERGENTES / MODALES (Alertas y Aviso de Privacidad)
+   -------------------------------------------------------------------------- */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(15, 23, 42, 0.55);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    z-index: 2000;
+}
+
+.modal-overlay.activo {
+    display: flex;
+}
+
+.modal-card {
+    background-color: #FFFFFF;
+    border: 1px solid var(--color-border);
+    border-radius: 0.75rem;
+    padding: 1.75rem 1.5rem;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 15px 35px rgba(15, 23, 42, 0.2);
+}
+
+.modal-card-privacidad {
+    max-width: 480px;
+    text-align: left;
+}
+
+.aviso-privacidad-box {
+    background-color: #F8FAFC;
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    font-size: 0.86rem;
+    line-height: 1.5;
+    color: var(--color-text-main);
+    margin-bottom: 1.2rem;
+}
+
+.icono-prevencion {
+    width: 52px;
+    height: 52px;
+    fill: #D97706;
+    margin: 0 auto 0.85rem auto;
+    display: block;
+}
+
+.modal-titulo {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-primary-inst);
+    margin-bottom: 0.45rem;
+}
+
+.modal-mensaje {
+    font-size: 0.92rem;
+    color: var(--color-text-main);
+    margin-bottom: 1.25rem;
+    line-height: 1.45;
+}
+
+.btn-modal {
+    background-color: var(--color-royal-blue);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.6rem 1.6rem;
+    font-size: 0.92rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+    width: 100%;
+}
+
+.btn-modal:hover {
+    background-color: var(--color-royal-blue-hover);
+}
+
+/* --------------------------------------------------------------------------
+   6. TARJETAS, CONTENEDORES, CARGA DE IMAGEN Y BOTONES
+   -------------------------------------------------------------------------- */
+.card-finanzas {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 0.65rem;
+}
+
+.card-header-inst {
+    background-color: #F8FAFC;
+    border-bottom: 1px solid var(--color-border);
+    color: var(--color-primary-inst);
+    font-weight: 700;
+    padding: 0.9rem 1.25rem;
+    border-top-left-radius: 0.65rem;
+    border-top-right-radius: 0.65rem;
+}
+
+.btn-royal {
+    background-color: var(--color-royal-blue) !important;
+    color: #FFFFFF !important;
+    border: 1px solid var(--color-royal-blue) !important;
+    font-weight: 600;
+    padding: 0.55rem 1.2rem;
+    border-radius: 0.5rem;
+    transition: background-color 0.15s ease, transform 0.12s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.btn-royal:hover, .btn-royal:focus {
+    background-color: var(--color-royal-blue-hover) !important;
+    border-color: var(--color-royal-blue-hover) !important;
+    color: #FFFFFF !important;
+    transform: translateY(-1px);
+}
+
+.btn-inst {
+    background-color: var(--color-primary-inst) !important;
+    color: #FFFFFF !important;
+    border: 1px solid var(--color-primary-inst) !important;
+    font-weight: 600;
+    padding: 0.55rem 1.2rem;
+    border-radius: 0.5rem;
+    transition: background-color 0.15s ease, color 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.btn-inst:hover {
+    background-color: #2C3E50 !important;
+    color: var(--color-aqua-accent) !important;
+}
+
+/* Vista previa de imagen de perfil */
+.preview-container-box {
+    background-color: #F8FAFC;
+    border: 1px dashed var(--color-border);
+    border-radius: 0.6rem;
+    padding: 0.85rem;
+    text-align: center;
+}
+
+.image-preview-avatar {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--color-primary-inst);
+    margin: 0.5rem auto;
+    display: none;
+}
+
+/* Badges y etiquetas */
+.badge-aqua {
+    background-color: var(--color-aqua-accent);
+    color: #0F172A;
+    font-weight: 700;
+    padding: 0.3rem 0.7rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.badge-income {
+    background-color: var(--color-income-bg);
+    color: var(--color-income);
+    border: 1px solid #86EFAC;
+    font-weight: 700;
+    padding: 0.25rem 0.65rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+}
+
+.badge-expense {
+    background-color: var(--color-expense-bg);
+    color: var(--color-expense);
+    border: 1px solid #FCA5A5;
+    font-weight: 700;
+    padding: 0.25rem 0.65rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+}
+
+.form-control-finanzas,
+.form-select-finanzas {
+    border: 1px solid var(--color-border) !important;
+    color: var(--color-text-main) !important;
+    background-color: #FFFFFF !important;
+    border-radius: 0.45rem;
+    padding: 0.55rem 0.85rem;
+    font-size: 0.92rem;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.form-control-finanzas:focus,
+.form-select-finanzas:focus {
+    border-color: var(--color-royal-blue) !important;
+    box-shadow: 0 0 0 3px rgba(0, 217, 255, 0.25) !important;
+    outline: none;
+}
+
+/* --------------------------------------------------------------------------
+   7. BARRA DE CARGA LIMPIA Y SENCILLA PARA EL DASHBOARD
+   -------------------------------------------------------------------------- */
+.tech-loader-wrapper {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 0.65rem;
+    padding: 1.15rem 1.5rem;
+    display: none;
+}
+
+.tech-loader-wrapper.active {
+    display: block;
+}
+
+.simple-loader-track {
+    width: 100%;
+    height: 8px;
+    background-color: #E2E8F0;
+    border-radius: 9999px;
+    overflow: hidden;
+    position: relative;
+}
+
+.simple-loader-bar {
+    height: 100%;
+    width: 45%;
+    background: linear-gradient(90deg, var(--color-primary-inst), var(--color-royal-blue), var(--color-aqua-accent));
+    border-radius: 9999px;
+    animation: slideProgress 0.9s ease-in-out infinite alternate;
+}
+
+@keyframes slideProgress {
+    0% { transform: translateX(-15%); width: 35%; }
+    100% { transform: translateX(135%); width: 55%; }
+}
+
+/* Banner de confirmación de movimiento */
+.confirmation-banner-finanzas {
+    display: none;
+    padding: 0.85rem 1.15rem;
+    background-color: #E8F5E9;
+    color: #1B5E20;
+    border: 1px solid #2E7D32;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.confirmation-banner-finanzas.show {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+}

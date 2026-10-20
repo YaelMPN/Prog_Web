@@ -1,0 +1,57 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f4f6f8;
+    padding: 30px 15px;
+    text-align: center;
+}
+
+h1 {
+    color: #1e293b;
+    margin-bottom: 25px;
+    font-size: 2rem;
+}
+
+/* Contenedor flexible que reordena los elementos sin alterar sus dimensiones */
+.contenedor {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Rectángulos con dimensiones fijas exactas (no se estiran ni se encogen) */
+.rectangulo {
+    width: 260px;
+    height: 110px;
+    border-radius: 8px;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    font-size: 1.25rem;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.icono {
+    width: 36px;
+    height: 36px;
+    fill: #ffffff;
+    flex-shrink: 0;
+}
+
+/* Colores diferentes para cada rectángulo */
+.r1 { background-color: #2563eb; } /* Avión -> Arquitectura */
+.r2 { background-color: #dc2626; } /* Corazón -> Computadora */
+.r3 { background-color: #d97706; } /* Estrella -> Economía */
+.r4 { background-color: #ea580c; } /* Fuego -> Filosofía */
+.r5 { background-color: #059669; } /* Mundo -> Memoria */

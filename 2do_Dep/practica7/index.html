@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Práctica 7 - Mensajes Emergentes</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <main class="contenedor">
+        <!-- Casilla de selección con la etiqueta exacta: Inicio de prueba -->
+        <div class="campo-control">
+            <input type="checkbox" id="checkPrueba">
+            <label for="checkPrueba">Inicio de prueba</label>
+        </div>
+
+        <!-- Botón con la etiqueta exacta: Acepto (inhabilitado al inicio) -->
+        <button type="button" id="btnAcepto" disabled>Acepto</button>
+    </main>
+
+    <!-- Ventana emergente (Modal) -->
+    <div id="modalEmergente" class="modal-overlay">
+        <div class="modal-card">
+            <!-- Imagen vectorial alusiva a la prevención / advertencia -->
+            <svg class="icono-prevencion" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>
+            </svg>
+
+            <!-- Leyenda exacta requerida -->
+            <p class="modal-mensaje">Cuidado, no presiones tan fuerte</p>
+
+            <!-- Botón de la ventana emergente -->
+            <button type="button" id="btnCerrarModal" class="btn-modal">Aceptar</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
