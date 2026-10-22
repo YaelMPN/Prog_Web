@@ -1,0 +1,13 @@
+# Dependencias y artefactos de compilación
+**/node_modules/
+**/dist/
+**/.vite/
+**/bin/
+**/obj/
+
+# Archivos temporales de SQLite (WAL / Shared Memory)
+*.db-shm
+*.db-wal
+**/*.db-shm
+**/*.db-wal
+
