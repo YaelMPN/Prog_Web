@@ -128,6 +128,13 @@ export default function MetasView({ balance, onNavigate, formatMoney }) {
                     },
                     ...prev
                 ]);
+                setModalInfo({
+                    activo: true,
+                    titulo: 'Simulación Guardada',
+                    mensaje: `Se guardó el escenario "${m.nombre}" con una cuota de ${formatMoney(
+                        m.cuotaMensualRequerida
+                    )} al mes durante ${m.plazoMeses} meses.`
+                });
                 return;
             }
         } catch (err) {
@@ -144,6 +151,13 @@ export default function MetasView({ balance, onNavigate, formatMoney }) {
         };
 
         setMetasGuardadas((prev) => [nuevaMeta, ...prev]);
+        setModalInfo({
+            activo: true,
+            titulo: 'Simulación Guardada',
+            mensaje: `Se guardó el escenario "${nuevaMeta.nombre}" con una cuota de ${formatMoney(
+                nuevaMeta.cuotaMensual
+            )} al mes durante ${nuevaMeta.plazoMeses} meses.`
+        });
     };
 
     const handleEliminarEscenario = (id) => {
@@ -269,10 +283,10 @@ export default function MetasView({ balance, onNavigate, formatMoney }) {
                 </div>
             </div>
 
-            <div className="row g-4">
+            <div className="row g-4 align-items-start">
                 {/* Columna Izquierda: Configurador de Meta */}
                 <div className="col-12 col-lg-5">
-                    <section className="card-finanzas h-100">
+                    <section className="card-finanzas">
                         <div className="card-header-inst">
                             <span>Configurar Meta de Ahorro</span>
                         </div>

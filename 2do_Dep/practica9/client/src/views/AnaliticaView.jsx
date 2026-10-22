@@ -281,10 +281,10 @@ export default function AnaliticaView({
             </section>
 
             {/* Desglose Completo de las 16 Categorías (8 Ingresos y 8 Egresos) */}
-            <div className="row g-4">
+            <div className="row g-4 align-items-start">
                 {/* Columna de Categorías de Ingreso */}
                 <div className="col-12 col-lg-6">
-                    <section className="card-finanzas h-100">
+                    <section className="card-finanzas">
                         <div className="card-header-inst d-flex justify-content-between align-items-center">
                             <span>Fuentes de Ingreso (8 Categorías)</span>
                             <span className="badge-income">
@@ -336,7 +336,7 @@ export default function AnaliticaView({
 
                 {/* Columna de Categorías de Egreso */}
                 <div className="col-12 col-lg-6">
-                    <section className="card-finanzas h-100">
+                    <section className="card-finanzas">
                         <div className="card-header-inst d-flex justify-content-between align-items-center">
                             <span>Distribución de Gastos / Egresos (8 Categorías)</span>
                             <span className="badge-expense">

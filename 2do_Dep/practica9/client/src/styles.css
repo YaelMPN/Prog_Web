@@ -26,7 +26,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   2. RESETS Y COMPATIBILIDAD BOOTSTRAP 5 + TAILWIND CSS
+   2. RESETS, CONTENEDORES Y RESPONSIVIDAD GENERAL (DESKTOP Y MÓVIL)
    -------------------------------------------------------------------------- */
 * {
     box-sizing: border-box;
@@ -34,30 +34,54 @@
     padding: 0;
 }
 
-html, body, #root {
+html, body {
     min-height: 100vh;
+    width: 100%;
+    overflow-x: hidden;
     background-color: var(--color-bg-main) !important;
     color: var(--color-text-main) !important;
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
-    display: flex;
-    flex-direction: column;
 }
 
-main {
-    flex: 1 0 auto;
+#root {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+/* Mantiene el tamaño original de los contenedores sin estirarse de más */
+main.container {
+    flex: 0 1 auto;
+    width: 100%;
+    max-width: 1120px !important;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* --------------------------------------------------------------------------
-   3. NAVBAR SUPERIOR CON EFECTO "PÍLDORA / BURBUJA" (#00D9FF)
+   3. NAVBAR SUPERIOR CON MINILOGO EDITABLE Y EFECTO "PÍLDORA / BURBUJA"
    -------------------------------------------------------------------------- */
 .navbar-finanzas {
     background-color: var(--color-primary-inst);
     border-bottom: 2px solid var(--color-border);
-    padding: 0.7rem 1rem;
+    padding: 0.7rem 0.75rem;
     position: sticky;
     top: 0;
     z-index: 1030;
+    width: 100%;
+}
+
+.navbar-finanzas > .container {
+    max-width: 1120px !important;
+}
+
+.navbar-brand-wrapper {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
 }
 
 .navbar-brand-title {
@@ -66,12 +90,79 @@ main {
     letter-spacing: -0.02em;
     display: inline-flex;
     align-items: center;
-    gap: 0.6rem;
+    gap: 0.5rem;
     text-decoration: none;
     font-size: 1.15rem;
     background: transparent;
     border: none;
     cursor: pointer;
+}
+
+/* Minilogo circular ("F" o Foto de Perfil) con botón de lapicito */
+.minilogo-avatar-box {
+    position: relative;
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.minilogo-circle {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background-color: var(--color-aqua-accent);
+    color: #0F172A;
+    font-weight: 800;
+    font-size: 1.05rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #FFFFFF;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.25);
+}
+
+.minilogo-img-perfil {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+}
+
+.btn-lapiz-minilogo {
+    position: absolute;
+    bottom: -3px;
+    right: -5px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: var(--color-royal-blue);
+    color: #FFFFFF;
+    border: 1.5px solid #FFFFFF;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    box-shadow: 0 2px 5px rgba(15, 23, 42, 0.35);
+    transition: transform 0.15s ease, background-color 0.15s ease;
+    z-index: 2;
+}
+
+.btn-lapiz-minilogo:hover {
+    background-color: var(--color-aqua-accent);
+    color: #0F172A;
+    transform: scale(1.1);
+}
+
+.btn-lapiz-minilogo svg {
+    width: 11px;
+    height: 11px;
+    fill: currentColor;
 }
 
 .bubble-nav-container {
@@ -80,15 +171,16 @@ main {
     border-radius: 9999px;
     padding: 0.28rem;
     display: inline-flex;
-    flex-wrap: wrap;
+    align-items: center;
     gap: 0.3rem;
+    max-width: 100%;
 }
 
 .bubble-nav-link {
     color: #E2E8F0 !important;
-    font-size: 0.88rem;
+    font-size: 0.86rem;
     font-weight: 600;
-    padding: 0.45rem 1.1rem !important;
+    padding: 0.42rem 1rem !important;
     border-radius: 9999px;
     text-decoration: none;
     transition: background-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
@@ -99,6 +191,7 @@ main {
     background: transparent;
     border: none;
     cursor: pointer;
+    flex-shrink: 0;
 }
 
 .bubble-nav-link:hover,
@@ -184,7 +277,7 @@ main {
     position: absolute;
     top: calc(100% + 10px);
     right: 0;
-    width: 300px;
+    width: min(310px, calc(100vw - 1.5rem));
     max-height: 320px;
     overflow-y: auto;
     background-color: #FFFFFF;
@@ -219,6 +312,7 @@ main {
     font-size: 0.82rem;
     color: var(--color-text-main);
     line-height: 1.35;
+    word-break: break-word;
 }
 
 .menu-notificaciones li.item-notificacion:last-child {
@@ -233,7 +327,7 @@ main {
 }
 
 /* --------------------------------------------------------------------------
-   5. VENTANAS EMERGENTES / MODALES (Alertas y Aviso de Privacidad)
+   5. VENTANAS EMERGENTES / MODALES (Alertas, Confirmaciones y Foto de Perfil)
    -------------------------------------------------------------------------- */
 .modal-overlay {
     position: fixed;
@@ -254,7 +348,7 @@ main {
     background-color: #FFFFFF;
     border: 1px solid var(--color-border);
     border-radius: 0.75rem;
-    padding: 1.75rem 1.5rem;
+    padding: 1.6rem 1.4rem;
     width: 100%;
     max-width: 400px;
     text-align: center;
@@ -281,6 +375,14 @@ main {
     width: 52px;
     height: 52px;
     fill: #D97706;
+    margin: 0 auto 0.85rem auto;
+    display: block;
+}
+
+.icono-exito-modal {
+    width: 52px;
+    height: 52px;
+    fill: var(--color-income);
     margin: 0 auto 0.85rem auto;
     display: block;
 }
@@ -323,6 +425,7 @@ main {
     background-color: var(--color-surface);
     border: 1px solid var(--color-border);
     border-radius: 0.65rem;
+    height: auto;
 }
 
 .card-header-inst {
@@ -384,7 +487,7 @@ main {
     background-color: #F8FAFC;
     border: 1px dashed var(--color-border);
     border-radius: 0.6rem;
-    padding: 0.85rem;
+    padding: 1rem;
     text-align: center;
 }
 
@@ -393,9 +496,25 @@ main {
     height: 96px;
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid var(--color-primary-inst);
+    border: 3px solid var(--color-aqua-accent);
     margin: 0.5rem auto;
-    display: none;
+    display: block;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
+}
+
+.image-preview-placeholder {
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    background-color: var(--color-primary-inst);
+    color: var(--color-aqua-accent);
+    font-size: 2rem;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0.4rem auto;
+    border: 2px dashed var(--color-border);
 }
 
 /* Badges y etiquetas */
@@ -500,8 +619,71 @@ main {
 
 .confirmation-banner-finanzas.show {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
     gap: 0.75rem;
 }
 
+/* --------------------------------------------------------------------------
+   8. MEDIA QUERIES PARA CELULAR Y TABLET (EVITAR DEFORMACIÓN Y ESTIRAMIENTO)
+   -------------------------------------------------------------------------- */
+@media (max-width: 991.98px) {
+    .navbar-layout-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.65rem;
+    }
+
+    .navbar-menu-center {
+        order: 3;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .bubble-nav-container {
+        width: 100%;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding: 0.25rem 0.35rem;
+    }
+
+    .bubble-nav-container::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+@media (max-width: 575.98px) {
+    main.container {
+        padding-left: 0.75rem !important;
+        padding-right: 0.75rem !important;
+    }
+
+    .card-finanzas.p-4 {
+        padding: 1rem !important;
+    }
+
+    .card-header-inst {
+        padding: 0.75rem 1rem;
+        font-size: 0.92rem;
+    }
+
+    .bubble-nav-link {
+        font-size: 0.8rem;
+        padding: 0.38rem 0.8rem !important;
+    }
+
+    .h2 {
+        font-size: 1.45rem !important;
+    }
+
+    .h3 {
+        font-size: 1.25rem !important;
+    }
+}

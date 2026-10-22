@@ -2,10 +2,10 @@
  * ============================================================================
  * SISTEMA DE CONTROL DE FINANZAS PERSONALES
  * Archivo: client/src/views/MovimientosView.jsx
- * Framework: React (useState, useEffect) + Bootstrap 5 (Grid y Formularios)
+ * Framework: React + TypeScript + Bootstrap 5 (Grid y Formularios)
  * Rol Arquitectónico: Pantalla 2 (Registro de Movimientos) con formulario
- * reactivo para las 8 categorías de ingreso y 8 de egreso, validación en modal
- * y lista lateral de movimientos recientes en vivo.
+ * reactivo para las 8 categorías de ingreso y 8 de egreso, mensaje emergente
+ * con botón "Aceptar" al registrar notificaciones y lista lateral en vivo.
  * ============================================================================
  */
 
@@ -51,6 +51,7 @@ export default function MovimientosView({
     const [savedDetail, setSavedDetail] = useState('');
     const [modalInfo, setModalInfo] = useState({
         activo: false,
+        esExito: false,
         titulo: 'Aviso',
         mensaje: ''
     });
@@ -79,6 +80,7 @@ export default function MovimientosView({
         if (isNaN(numericMonto) || numericMonto <= 0) {
             setModalInfo({
                 activo: true,
+                esExito: false,
                 titulo: 'Monto inválido',
                 mensaje: 'El monto debe ser una cantidad mayor a $0.00.'
             });
@@ -88,6 +90,7 @@ export default function MovimientosView({
         if (!categoria) {
             setModalInfo({
                 activo: true,
+                esExito: false,
                 titulo: 'Categoría requerida',
                 mensaje: 'Selecciona una categoría de la lista.'
             });
@@ -97,6 +100,7 @@ export default function MovimientosView({
         if (!fecha) {
             setModalInfo({
                 activo: true,
+                esExito: false,
                 titulo: 'Fecha requerida',
                 mensaje: 'Selecciona la fecha del movimiento.'
             });
@@ -106,6 +110,7 @@ export default function MovimientosView({
         if (descripcion.trim().length < 2) {
             setModalInfo({
                 activo: true,
+                esExito: false,
                 titulo: 'Descripción requerida',
                 mensaje: 'Ingresa una descripción para este movimiento.'
             });
@@ -123,6 +128,7 @@ export default function MovimientosView({
         if (result && !result.ok) {
             setModalInfo({
                 activo: true,
+                esExito: false,
                 titulo: result.titulo || 'Aviso',
                 mensaje: result.message || 'No fue posible registrar el movimiento.'
             });
@@ -135,11 +141,21 @@ export default function MovimientosView({
             categoria
         };
 
-        setSavedDetail(
-            `${txGuardada.tipo} de ${formatMoney(txGuardada.monto)} en ${txGuardada.categoria}`
-        );
+        const signo = txGuardada.tipo === 'Ingreso' ? '+' : '-';
+        const detalleTexto = `${txGuardada.tipo} de ${formatMoney(txGuardada.monto)} en ${txGuardada.categoria}`;
+        setSavedDetail(detalleTexto);
         setMonto('');
         setDescripcion('');
+
+        // Mensaje emergente con botón Aceptar para notificar el movimiento registrado
+        setModalInfo({
+            activo: true,
+            esExito: true,
+            titulo: '¡Movimiento Registrado!',
+            mensaje: `Notificación registrada: ${txGuardada.tipo} (${txGuardada.categoria}) por ${signo}${formatMoney(
+                txGuardada.monto
+            )}. Se ha actualizado tu saldo y tu bandeja de notificaciones.`
+        });
     };
 
     const recent = (transactions || []).slice(0, 6);
@@ -155,7 +171,7 @@ export default function MovimientosView({
                             Captura tus ingresos y gastos seleccionando el monto, la categoría y la fecha.
                         </p>
                     </div>
-                    <div className="d-flex gap-2">
+                    <div className="d-flex flex-wrap gap-2">
                         <button
                             type="button"
                             className="btn btn-outline-secondary text-sm fw-semibold"
@@ -174,7 +190,7 @@ export default function MovimientosView({
                 </div>
             </section>
 
-            <div className="row g-4">
+            <div className="row g-4 align-items-start">
                 {/* Columna Izquierda: Formulario */}
                 <div className="col-12 col-lg-7">
                     <section className="card-finanzas">
@@ -402,10 +418,10 @@ export default function MovimientosView({
                                     return (
                                         <div
                                             key={tx.id}
-                                            className="p-3 rounded border border-[#CFD8DC] bg-white flex items-center justify-between gap-2"
+                                            className="p-3 rounded border border-[#CFD8DC] bg-white d-flex align-items-center justify-content-between gap-2"
                                         >
                                             <div className="min-w-0">
-                                                <div className="flex items-center gap-2 mb-1">
+                                                <div className="d-flex flex-wrap align-items-center gap-1.5 mb-1">
                                                     <span
                                                         className={
                                                             esIngreso ? 'badge-income' : 'badge-expense'
@@ -439,7 +455,7 @@ export default function MovimientosView({
                 </div>
             </div>
 
-            {/* Ventana Emergente / Modal Reactivo */}
+            {/* Ventana Emergente / Modal Reactivo (Confirmación de Notificación y Validaciones) */}
             <div
                 id="modalEmergente"
                 className={`modal-overlay ${modalInfo.activo ? 'activo' : ''}`}
@@ -448,9 +464,15 @@ export default function MovimientosView({
                 aria-labelledby="modalTituloTexto"
             >
                 <div className="modal-card">
-                    <svg className="icono-prevencion" viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z" />
-                    </svg>
+                    {modalInfo.esExito ? (
+                        <svg className="icono-exito-modal" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                        </svg>
+                    ) : (
+                        <svg className="icono-prevencion" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z" />
+                        </svg>
+                    )}
                     <h2 id="modalTituloTexto" className="modal-titulo">
                         {modalInfo.titulo}
                     </h2>
@@ -472,4 +494,3 @@ export default function MovimientosView({
         </main>
     );
 }
-

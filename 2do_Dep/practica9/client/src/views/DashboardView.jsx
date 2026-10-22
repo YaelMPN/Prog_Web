@@ -24,6 +24,11 @@ export default function DashboardView({
     const [syncing, setSyncing] = useState(true);
     const [editandoSaldo, setEditandoSaldo] = useState(false);
     const [nuevoSaldoInput, setNuevoSaldoInput] = useState(String(balance.saldoBase || 0));
+    const [modalInfo, setModalInfo] = useState({
+        activo: false,
+        titulo: '',
+        mensaje: ''
+    });
 
     useEffect(() => {
         setNuevoSaldoInput(String(balance.saldoBase || 0));
@@ -50,9 +55,23 @@ export default function DashboardView({
     const handleGuardarSaldoBase = async (e) => {
         e.preventDefault();
         const valor = parseFloat(nuevoSaldoInput);
-        if (!isNaN(valor) && valor >= 0 && onUpdateSaldoBase) {
+        if (isNaN(valor) || valor < 0) {
+            setModalInfo({
+                activo: true,
+                titulo: 'Saldo inválido',
+                mensaje: 'El saldo inicial debe ser $0.00 o una cantidad positiva.'
+            });
+            return;
+        }
+
+        if (onUpdateSaldoBase) {
             await onUpdateSaldoBase(valor);
             setEditandoSaldo(false);
+            setModalInfo({
+                activo: true,
+                titulo: 'Saldo Inicial Actualizado',
+                mensaje: `Notificación registrada: Tu saldo inicial se actualizó a ${formatMoney(valor)}.`
+            });
         }
     };
 
@@ -123,7 +142,7 @@ export default function DashboardView({
                     pointerEvents: syncing ? 'none' : 'auto'
                 }}
             >
-                <div className="row g-3 mb-4">
+                <div className="row g-3 mb-4 align-items-stretch">
                     {/* Saldo Actual */}
                     <div className="col-12 col-md-4">
                         <div
@@ -167,7 +186,7 @@ export default function DashboardView({
                                     </div>
                                 </form>
                             ) : (
-                                <div className="d-flex justify-content-between align-items-center pt-2 border-top border-[#CFD8DC] text-xs text-slate-600">
+                                <div className="d-flex flex-wrap justify-content-between align-items-center gap-1 pt-2 border-top border-[#CFD8DC] text-xs text-slate-600">
                                     <span>
                                         Saldo Inicial:{' '}
                                         <strong id="dash-saldo-base">{formatMoney(balance.saldoBase)}</strong>{' '}
@@ -239,10 +258,10 @@ export default function DashboardView({
                     </div>
                 </div>
 
-                {/* Proporción y Categorías */}
-                <div className="row g-4 mb-4">
+                {/* Proporción y Categorías (align-items-start evita estiramiento artificial) */}
+                <div className="row g-4 mb-4 align-items-start">
                     <div className="col-12 col-lg-5">
-                        <div className="card-finanzas h-100">
+                        <div className="card-finanzas">
                             <div className="card-header-inst d-flex justify-content-between align-items-center">
                                 <span>Proporción (Ingresos vs. Egresos)</span>
                                 <a
@@ -304,7 +323,7 @@ export default function DashboardView({
                     </div>
 
                     <div className="col-12 col-lg-7">
-                        <div className="card-finanzas h-100">
+                        <div className="card-finanzas">
                             <div className="card-header-inst d-flex justify-content-between align-items-center">
                                 <span>Resumen por Categoría</span>
                                 <a
@@ -334,8 +353,8 @@ export default function DashboardView({
 
                                         return (
                                             <div key={item.categoria} className="col-6 col-md-4">
-                                                <div className="p-3 rounded border border-[#CFD8DC] bg-[#F8FAFC] flex flex-col justify-between h-100">
-                                                    <div className="flex items-center justify-between mb-1 gap-1">
+                                                <div className="p-3 rounded border border-[#CFD8DC] bg-[#F8FAFC] d-flex flex-column justify-content-between h-100">
+                                                    <div className="d-flex align-items-center justify-content-between mb-1 gap-1">
                                                         <span className="font-semibold text-xs text-[#3B5266] text-truncate">
                                                             {item.categoria}
                                                         </span>
@@ -404,7 +423,7 @@ export default function DashboardView({
                                                 </td>
                                                 <td className="text-sm text-[#2D3748]">{tx.descripcion}</td>
                                                 <td
-                                                    className={`text-end fw-bold ${
+                                                    className={`text-end fw-bold text-nowrap ${
                                                         esIngreso ? 'text-success' : 'text-danger'
                                                     }`}
                                                 >
@@ -421,8 +440,29 @@ export default function DashboardView({
                 </section>
             </div>
 
+            {/* Ventana Emergente con botón Aceptar */}
+            <div
+                className={`modal-overlay ${modalInfo.activo ? 'activo' : ''}`}
+                role="dialog"
+                aria-modal="true"
+            >
+                <div className="modal-card">
+                    <svg className="icono-exito-modal" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                    </svg>
+                    <h2 className="modal-titulo">{modalInfo.titulo}</h2>
+                    <p className="modal-mensaje">{modalInfo.mensaje}</p>
+                    <button
+                        type="button"
+                        className="btn-modal"
+                        onClick={() => setModalInfo({ ...modalInfo, activo: false })}
+                    >
+                        Aceptar
+                    </button>
+                </div>
+            </div>
+
             <FrameworkBadge />
         </main>
     );
 }
-

@@ -4,8 +4,9 @@
  * Archivo: client/src/views/ReportesView.jsx
  * Framework: React + TypeScript + Bootstrap 5 (Tablas y Grid Responsivo)
  * Rol Arquitectónico: Pantalla 3 (Historial de Movimientos y Reportes) con
- * filtros dinámicos por tipo, categoría, buscador de texto y eliminación vía
- * DELETE /api/finanzas/movimientos/{id} en ASP.NET Core (.NET).
+ * filtros dinámicos por tipo, categoría, buscador de texto, eliminación vía
+ * DELETE /api/finanzas/movimientos/{id} en ASP.NET Core (.NET) y mensaje
+ * emergente de confirmación.
  * ============================================================================
  */
 
@@ -44,6 +45,11 @@ export default function ReportesView({
     const [filtroTipo, setFiltroTipo] = useState('TODOS');
     const [filtroCategoria, setFiltroCategoria] = useState('TODAS');
     const [busqueda, setBusqueda] = useState('');
+    const [modalInfo, setModalInfo] = useState({
+        activo: false,
+        titulo: '',
+        mensaje: ''
+    });
 
     const transaccionesFiltradas = useMemo(() => {
         let lista = [...(transactions || [])];
@@ -98,6 +104,17 @@ export default function ReportesView({
         setBusqueda('');
     };
 
+    const handleEliminar = async (tx) => {
+        await onDeleteTransaction(tx.id);
+        setModalInfo({
+            activo: true,
+            titulo: 'Movimiento Eliminado',
+            mensaje: `Notificación registrada: Se eliminó el movimiento de "${tx.categoria}" por ${formatMoney(
+                tx.monto
+            )}.`
+        });
+    };
+
     return (
         <main className="container py-4">
             {/* Encabezado */}
@@ -125,7 +142,7 @@ export default function ReportesView({
 
             {/* Balance Comparativo Simple (Ingresos vs. Gastos) */}
             <section className="card-finanzas p-4 mb-4">
-                <div className="d-flex flex-wrap justify-content-between align-items-center mb-3">
+                <div className="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
                     <h2 className="h6 fw-bold text-[#3B5266] mb-0">
                         Balance Comparativo (Ingresos vs. Gastos)
                     </h2>
@@ -136,7 +153,7 @@ export default function ReportesView({
 
                 <div className="row g-3 mb-3">
                     <div className="col-6 col-md-3">
-                        <div className="p-3 rounded border border-[#CFD8DC] bg-[#F4F6F8]">
+                        <div className="p-3 rounded border border-[#CFD8DC] bg-[#F4F6F8] h-100">
                             <span className="text-xs text-slate-500 d-block">Ingresos</span>
                             <strong className="h5 fw-bold text-success mb-0" id="rep-total-ingresos">
                                 {formatMoney(metricasFiltradas.totalIngresos)}
@@ -144,7 +161,7 @@ export default function ReportesView({
                         </div>
                     </div>
                     <div className="col-6 col-md-3">
-                        <div className="p-3 rounded border border-[#CFD8DC] bg-[#F4F6F8]">
+                        <div className="p-3 rounded border border-[#CFD8DC] bg-[#F4F6F8] h-100">
                             <span className="text-xs text-slate-500 d-block">Gastos / Egresos</span>
                             <strong className="h5 fw-bold text-danger mb-0" id="rep-total-egresos">
                                 {formatMoney(metricasFiltradas.totalEgresos)}
@@ -152,7 +169,7 @@ export default function ReportesView({
                         </div>
                     </div>
                     <div className="col-6 col-md-3">
-                        <div className="p-3 rounded border border-[#CFD8DC] bg-[#F4F6F8]">
+                        <div className="p-3 rounded border border-[#CFD8DC] bg-[#F4F6F8] h-100">
                             <span className="text-xs text-slate-500 d-block">Diferencia Neta</span>
                             <strong className="h5 fw-bold text-[#1D4ED8] mb-0" id="rep-balance-neto">
                                 {(metricasFiltradas.balanceNetoMes >= 0 ? '+' : '') +
@@ -161,7 +178,7 @@ export default function ReportesView({
                         </div>
                     </div>
                     <div className="col-6 col-md-3">
-                        <div className="p-3 rounded border border-[#CFD8DC] bg-[#F4F6F8]">
+                        <div className="p-3 rounded border border-[#CFD8DC] bg-[#F4F6F8] h-100">
                             <span className="text-xs text-slate-500 d-block">Saldo Total</span>
                             <strong className="h5 fw-bold text-[#3B5266] mb-0" id="rep-saldo-final">
                                 {formatMoney(balance.saldoActual)}
@@ -376,7 +393,7 @@ export default function ReportesView({
                                                     className="btn btn-sm btn-outline-danger py-0 px-2"
                                                     data-delete-tx={tx.id}
                                                     title="Eliminar movimiento"
-                                                    onClick={() => onDeleteTransaction(tx.id)}
+                                                    onClick={() => handleEliminar(tx)}
                                                 >
                                                     ✕
                                                 </button>
@@ -390,8 +407,29 @@ export default function ReportesView({
                 </div>
             </section>
 
+            {/* Ventana Emergente con botón Aceptar */}
+            <div
+                className={`modal-overlay ${modalInfo.activo ? 'activo' : ''}`}
+                role="dialog"
+                aria-modal="true"
+            >
+                <div className="modal-card">
+                    <svg className="icono-prevencion" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z" />
+                    </svg>
+                    <h2 className="modal-titulo">{modalInfo.titulo}</h2>
+                    <p className="modal-mensaje">{modalInfo.mensaje}</p>
+                    <button
+                        type="button"
+                        className="btn-modal"
+                        onClick={() => setModalInfo({ ...modalInfo, activo: false })}
+                    >
+                        Aceptar
+                    </button>
+                </div>
+            </div>
+
             <FrameworkBadge />
         </main>
     );
 }
-
