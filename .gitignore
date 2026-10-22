@@ -1,1 +1,9 @@
 /1er_Dep
+1er_Dep/
+**/node_modules/
+**/bin/
+**/obj/
+**/.vite/
+**/*.sync-conflict-*
+*.db-shm
+*.db-wal
