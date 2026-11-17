@@ -1,0 +1,12 @@
+bin/
+obj/
+node_modules/
+dist/
+.vite/
+*.db-shm
+*.db-wal
+**/bin/
+**/obj/
+**/node_modules/
+**/*.db-shm
+**/*.db-wal
